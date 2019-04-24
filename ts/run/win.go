@@ -44,7 +44,7 @@ func (run *RunSum) App(val float64) (sum float64) {
 	if run.cnt < run.win {
 		run.cnt++
 	}
-	run.idx = cnt2idx(run.win, run.idx+1)
+	run.idx = next(run.win, run.idx+1)
 	return run.sum
 }
 
@@ -63,7 +63,7 @@ func (run *RunMax) App(val float64) (max float64) {
 			max = run.vals[i]
 		}
 	}
-	run.idx = cnt2idx(run.win, run.idx+1)
+	run.idx = next(run.win, run.idx+1)
 	return
 }
 
@@ -82,7 +82,7 @@ func (run *RunMin) App(val float64) (min float64) {
 			min = run.vals[i]
 		}
 	}
-	run.idx = cnt2idx(run.win, run.idx+1)
+	run.idx = next(run.win, run.idx+1)
 	return
 }
 
@@ -96,7 +96,7 @@ func (run *RunAvg) App(val float64) (avg float64) {
 		run.cnt++
 	}
 	run.vals[run.idx] = val
-	run.idx = cnt2idx(run.win, run.idx+1)
+	run.idx = next(run.win, run.idx+1)
 	return run.sum / float64(run.cnt)
 }
 
@@ -109,7 +109,7 @@ func (run *RunFst) App(val float64) (fst float64) {
 	if run.cnt < run.win {
 		run.cnt++
 	}
-	run.idx = cnt2idx(run.win, run.idx+1)
+	run.idx = next(run.win, run.idx+1)
 	if run.cnt == run.win {
 		return run.vals[run.idx]
 	} else {
@@ -130,18 +130,18 @@ func NewRunSlr(win uint64) *RunSlr {
 func (run *RunSlr) App(val float64) (slope float64) {
 	run.sumY += val - run.vals[run.idx]
 	run.vals[run.idx] = val
-	run.idx = cnt2idx(run.win, run.idx+1)
+	run.idx = next(run.win, run.idx+1)
 	if run.cnt < run.win-1 {
 		run.cnt++
 		return
 	}
 	cov, yAvg := float64(0), run.sumY/float64(run.win)
 	for i := uint64(0); i < run.win; i++ {
-		cov += run.ws[i] * (run.vals[cnt2idx(run.win, run.idx+i)] - yAvg)
+		cov += run.ws[i] * (run.vals[next(run.win, run.idx+i)] - yAvg)
 	}
 	return cov / run.varX
 }
 
-func cnt2idx(win, cnt uint64) uint64 {
+func next(win, cnt uint64) uint64 {
 	return cnt % win
 }
