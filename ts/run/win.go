@@ -27,6 +27,13 @@ type RunFst struct {
 	vals          []float64
 }
 
+// Simple Linear Regression over timeline
+type RunSlr struct {
+	win, idx, cnt uint
+	vals, ws      []float64
+	varX, sumY    float64
+}
+
 func NewRunSum(win uint) *RunSum {
 	return &RunSum{win: win, vals: make([]float64, win)}
 }
@@ -108,6 +115,31 @@ func (run *RunFst) App(val float64) (fst float64) {
 	} else {
 		return run.vals[0]
 	}
+}
+
+func NewRunSlr(win uint) *RunSlr {
+	run := &RunSlr{win: win, vals: make([]float64, win), ws: make([]float64, win)}
+	avg := float64(win-1) / float64(2)
+	for i := uint(0); i < win; i++ {
+		run.ws[i] = float64(i) - avg
+		run.varX += run.ws[i] * run.ws[i]
+	}
+	return run
+}
+
+func (run *RunSlr) App(val float64) (slope float64) {
+	run.sumY += val - run.vals[run.idx]
+	run.vals[run.idx] = val
+	run.idx = cnt2idx(run.win, run.idx+1)
+	if run.cnt < run.win-1 {
+		run.cnt++
+		return
+	}
+	cov, yAvg := float64(0), run.sumY/float64(run.win)
+	for i := uint(0); i < run.win; i++ {
+		cov += run.ws[i] * (run.vals[cnt2idx(run.win, run.idx+i)] - yAvg)
+	}
+	return cov / run.varX
 }
 
 func cnt2idx(win, cnt uint) uint {
