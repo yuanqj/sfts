@@ -25,7 +25,7 @@ func TestRunSum(t *testing.T) {
 	run31 := run.NewRunSum(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
-		res31[i] = run31.Set(vals[i])
+		res31[i] = run31.App(vals[i])
 	}
 	if err := compare(sum31, res31, 1e-8); err != nil {
 		t.Fatal(err)
@@ -34,7 +34,7 @@ func TestRunSum(t *testing.T) {
 	run127 := run.NewRunSum(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
-		res127[i] = run127.Set(vals[i])
+		res127[i] = run127.App(vals[i])
 	}
 	if err := compare(sum127, res127, 1e-8); err != nil {
 		t.Fatal(err)
@@ -45,7 +45,7 @@ func TestRunMax(t *testing.T) {
 	run31 := run.NewRunMax(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
-		res31[i] = run31.Set(vals[i])
+		res31[i] = run31.App(vals[i])
 	}
 	if err := compare(max31, res31, 1e-8); err != nil {
 		t.Fatal(err)
@@ -54,7 +54,7 @@ func TestRunMax(t *testing.T) {
 	run127 := run.NewRunMax(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
-		res127[i] = run127.Set(vals[i])
+		res127[i] = run127.App(vals[i])
 	}
 	if err := compare(max127, res127, 1e-8); err != nil {
 		t.Fatal(err)
@@ -65,7 +65,7 @@ func TestRunMin(t *testing.T) {
 	run31 := run.NewRunMin(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
-		res31[i] = run31.Set(vals[i])
+		res31[i] = run31.App(vals[i])
 	}
 	if err := compare(min31, res31, 1e-8); err != nil {
 		t.Fatal(err)
@@ -74,7 +74,7 @@ func TestRunMin(t *testing.T) {
 	run127 := run.NewRunMin(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
-		res127[i] = run127.Set(vals[i])
+		res127[i] = run127.App(vals[i])
 	}
 	if err := compare(min127, res127, 1e-8); err != nil {
 		t.Fatal(err)
@@ -85,7 +85,7 @@ func TestRunAvg(t *testing.T) {
 	run31 := run.NewRunAvg(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
-		res31[i] = run31.Set(vals[i])
+		res31[i] = run31.App(vals[i])
 	}
 	if err := compare(avg31, res31, 1e-8); err != nil {
 		t.Fatal(err)
@@ -94,7 +94,7 @@ func TestRunAvg(t *testing.T) {
 	run127 := run.NewRunAvg(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
-		res127[i] = run127.Set(vals[i])
+		res127[i] = run127.App(vals[i])
 	}
 	if err := compare(avg127, res127, 1e-8); err != nil {
 		t.Fatal(err)
@@ -105,7 +105,7 @@ func TestRunFst(t *testing.T) {
 	run31 := run.NewRunFst(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
-		res31[i] = run31.Set(vals[i])
+		res31[i] = run31.App(vals[i])
 	}
 	if err := compare(fst31, res31, 1e-8); err != nil {
 		t.Fatal(err)
@@ -114,7 +114,7 @@ func TestRunFst(t *testing.T) {
 	run127 := run.NewRunFst(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
-		res127[i] = run127.Set(vals[i])
+		res127[i] = run127.App(vals[i])
 	}
 	if err := compare(fst127, res127, 1e-8); err != nil {
 		t.Fatal(err)
