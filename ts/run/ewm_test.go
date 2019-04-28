@@ -12,7 +12,7 @@ var (
 )
 
 func TestEWMAvg(t *testing.T) {
-	ewm, _ := run.NewEWMAvg(ewmAlpha, false)
+	ewm := run.NewEWMAvg(ewmAlpha, false)
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = ewm.App(vals[i])
@@ -23,7 +23,7 @@ func TestEWMAvg(t *testing.T) {
 }
 
 func TestEWMAvgAdj(t *testing.T) {
-	ewm, _ := run.NewEWMAvg(ewmAlpha, true)
+	ewm := run.NewEWMAvg(ewmAlpha, true)
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = ewm.App(vals[i])

@@ -1,7 +1,6 @@
 package run
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -13,12 +12,11 @@ type EWMAvg struct {
 	avg, ini     float64
 }
 
-func NewEWMAvg(alpha float64, adjust bool) (ewm *EWMAvg, err error) {
+func NewEWMAvg(alpha float64, adjust bool) *EWMAvg {
 	if alpha < 1e-13 || alpha > 1 {
-		err = fmt.Errorf("`alpha` must be between 0 and 1 inclusive")
+		panic("`alpha` must be between 0 and 1 inclusive")
 	}
-	ewm = &EWMAvg{alpha: alpha, decay: 1 - alpha, adjust: adjust, ini: alpha}
-	return
+	return &EWMAvg{alpha: alpha, decay: 1 - alpha, adjust: adjust, ini: alpha}
 }
 
 func (ewm *EWMAvg) App(val float64) (avg float64) {
