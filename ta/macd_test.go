@@ -14,7 +14,7 @@ var (
 )
 
 func TestMACD(t *testing.T) {
-	macd := ta.NewMACD(12, 26, 9)
+	macd := ta.NewMACD(ta.MACDSpanFast, ta.MACDSpanSlow, ta.MACDSpanSignal)
 	difs, dems := make([]float64, len(vals)), make([]float64, len(vals))
 	for i := range vals {
 		difs[i], dems[i] = macd.App(vals[i])
