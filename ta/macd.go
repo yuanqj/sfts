@@ -5,16 +5,16 @@ import (
 )
 
 const (
-	MACDPeriodFast   uint64 = 0
-	MACDPeriodSlow   uint64 = 0
-	MACDPeriodSignal uint64 = 0
+	MACDPeriodFast   uint = 0
+	MACDPeriodSlow   uint = 0
+	MACDPeriodSignal uint = 0
 )
 
 type MACD struct {
 	emaFast, emaSlow, emaSignal *run.EWMAvg
 }
 
-func NewMACD(periodFast, periodSlow, periodSignal uint64) *MACD {
+func NewMACD(periodFast, periodSlow, periodSignal uint) *MACD {
 	if periodFast == MACDPeriodFast {
 		periodFast = 12
 	}
