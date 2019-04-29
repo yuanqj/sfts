@@ -5,29 +5,29 @@ import (
 )
 
 const (
-	MACDSpanFast   uint64 = 0
-	MACDSpanSlow   uint64 = 0
-	MACDSpanSignal uint64 = 0
+	MACDPeriodFast   uint64 = 0
+	MACDPeriodSlow   uint64 = 0
+	MACDPeriodSignal uint64 = 0
 )
 
 type MACD struct {
 	emaFast, emaSlow, emaSignal *run.EWMAvg
 }
 
-func NewMACD(spanFast, spanSlow, spanSignal uint64) *MACD {
-	if spanFast == MACDSpanFast {
-		spanFast = 12
+func NewMACD(periodFast, periodSlow, periodSignal uint64) *MACD {
+	if periodFast == MACDPeriodFast {
+		periodFast = 12
 	}
-	if spanSlow == MACDSpanSlow {
-		spanSlow = 26
+	if periodSlow == MACDPeriodSlow {
+		periodSlow = 26
 	}
-	if spanSignal == MACDSpanSignal {
-		spanSignal = 9
+	if periodSignal == MACDPeriodSignal {
+		periodSignal = 9
 	}
 	return &MACD{
-		emaFast:   run.NewEWMAvg(run.EWMSpan(float64(spanFast)), true),
-		emaSlow:   run.NewEWMAvg(run.EWMSpan(float64(spanSlow)), true),
-		emaSignal: run.NewEWMAvg(run.EWMSpan(float64(spanSignal)), true),
+		emaFast:   run.NewEWMAvg(run.EWMSpan(float64(periodFast)), true),
+		emaSlow:   run.NewEWMAvg(run.EWMSpan(float64(periodSlow)), true),
+		emaSignal: run.NewEWMAvg(run.EWMSpan(float64(periodSignal)), true),
 	}
 }
 
