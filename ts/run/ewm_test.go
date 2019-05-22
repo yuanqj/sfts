@@ -1,7 +1,7 @@
 package run_test
 
 import (
-	"github.com/yuanqj8191/sfts/ts/run"
+	"github.com/yuanqj/sfts/ts/run"
 	"testing"
 )
 

@@ -2,7 +2,7 @@ package cum_test
 
 import (
 	"fmt"
-	"github.com/yuanqj8191/sfts/ts/cum"
+	"github.com/yuanqj/sfts/ts/cum"
 	"math"
 	"testing"
 )

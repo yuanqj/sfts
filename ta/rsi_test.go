@@ -1,7 +1,7 @@
 package ta_test
 
 import (
-	"github.com/yuanqj8191/sfts/ta"
+	"github.com/yuanqj/sfts/ta"
 	"testing"
 )
 

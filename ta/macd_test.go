@@ -2,7 +2,7 @@ package ta_test
 
 import (
 	"fmt"
-	"github.com/yuanqj8191/sfts/ta"
+	"github.com/yuanqj/sfts/ta"
 	"math"
 	"testing"
 )

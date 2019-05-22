@@ -2,7 +2,7 @@ package run_test
 
 import (
 	"fmt"
-	"github.com/yuanqj8191/sfts/ts/run"
+	"github.com/yuanqj/sfts/ts/run"
 	"math"
 	"testing"
 )
