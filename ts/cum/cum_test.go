@@ -32,7 +32,7 @@ var (
 )
 
 func TestCumSum(t *testing.T) {
-	_cum := cum.NewCumSum()
+	_cum := cum.NewSum()
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = _cum.App(vals[i])
@@ -43,7 +43,7 @@ func TestCumSum(t *testing.T) {
 }
 
 func TestCumPrd(t *testing.T) {
-	_cum := cum.NewCumPrd()
+	_cum := cum.NewPrd()
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = _cum.App(vals[i] / 40)
@@ -54,7 +54,7 @@ func TestCumPrd(t *testing.T) {
 }
 
 func TestCumMax(t *testing.T) {
-	_cum := cum.NewCumMax()
+	_cum := cum.NewMax()
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = _cum.App(vals[i])
@@ -65,7 +65,7 @@ func TestCumMax(t *testing.T) {
 }
 
 func TestCumMin(t *testing.T) {
-	_cum := cum.NewCumMin()
+	_cum := cum.NewMin()
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = _cum.App(vals[i])
@@ -76,7 +76,7 @@ func TestCumMin(t *testing.T) {
 }
 
 func TestCumCnt(t *testing.T) {
-	_cum := cum.NewCumCnt()
+	_cum := cum.NewCnt()
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = _cum.App(vals[i])
@@ -87,7 +87,7 @@ func TestCumCnt(t *testing.T) {
 }
 
 func TestCumAvg(t *testing.T) {
-	_cum := cum.NewCumAvg()
+	_cum := cum.NewAvg()
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = _cum.App(vals[i])

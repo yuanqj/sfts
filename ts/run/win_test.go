@@ -38,7 +38,7 @@ var (
 )
 
 func TestRunSum(t *testing.T) {
-	run31 := run.NewRunSum(31)
+	run31 := run.NewSum(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
 		res31[i] = run31.App(vals[i])
@@ -47,7 +47,7 @@ func TestRunSum(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	run127 := run.NewRunSum(127)
+	run127 := run.NewSum(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
 		res127[i] = run127.App(vals[i])
@@ -58,7 +58,7 @@ func TestRunSum(t *testing.T) {
 }
 
 func TestRunMax(t *testing.T) {
-	run31 := run.NewRunMax(31)
+	run31 := run.NewMax(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
 		res31[i] = run31.App(vals[i])
@@ -67,7 +67,7 @@ func TestRunMax(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	run127 := run.NewRunMax(127)
+	run127 := run.NewMax(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
 		res127[i] = run127.App(vals[i])
@@ -78,7 +78,7 @@ func TestRunMax(t *testing.T) {
 }
 
 func TestRunMin(t *testing.T) {
-	run31 := run.NewRunMin(31)
+	run31 := run.NewMin(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
 		res31[i] = run31.App(vals[i])
@@ -87,7 +87,7 @@ func TestRunMin(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	run127 := run.NewRunMin(127)
+	run127 := run.NewMin(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
 		res127[i] = run127.App(vals[i])
@@ -98,7 +98,7 @@ func TestRunMin(t *testing.T) {
 }
 
 func TestRunAvg(t *testing.T) {
-	run31 := run.NewRunAvg(31)
+	run31 := run.NewAvg(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
 		res31[i] = run31.App(vals[i])
@@ -107,7 +107,7 @@ func TestRunAvg(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	run127 := run.NewRunAvg(127)
+	run127 := run.NewAvg(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
 		res127[i] = run127.App(vals[i])
@@ -118,7 +118,7 @@ func TestRunAvg(t *testing.T) {
 }
 
 func TestRunFst(t *testing.T) {
-	run31 := run.NewRunFst(31)
+	run31 := run.NewFst(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
 		res31[i] = run31.App(vals[i])
@@ -127,7 +127,7 @@ func TestRunFst(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	run127 := run.NewRunFst(127)
+	run127 := run.NewFst(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
 		res127[i] = run127.App(vals[i])
@@ -138,7 +138,7 @@ func TestRunFst(t *testing.T) {
 }
 
 func TestRunSlr(t *testing.T) {
-	run31 := run.NewRunSlr(31)
+	run31 := run.NewSlr(31)
 	res31 := make([]float64, len(vals))
 	for i := range vals {
 		res31[i] = run31.App(vals[i])
@@ -147,7 +147,7 @@ func TestRunSlr(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	run127 := run.NewRunSlr(127)
+	run127 := run.NewSlr(127)
 	res127 := make([]float64, len(vals))
 	for i := range vals {
 		res127[i] = run127.App(vals[i])
