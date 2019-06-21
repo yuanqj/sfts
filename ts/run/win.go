@@ -15,40 +15,40 @@
 package run
 
 type WinSum struct {
-	win, idx, cnt uint64
+	win, idx, cnt uint
 	vals          []float64
 	sum           float64
 }
 
 type WinMax struct {
-	win, idx, cnt uint64
+	win, idx, cnt uint
 	vals          []float64
 }
 
 type WinMin struct {
-	win, idx, cnt uint64
+	win, idx, cnt uint
 	vals          []float64
 }
 
 type WinAvg struct {
-	win, idx, cnt uint64
+	win, idx, cnt uint
 	vals          []float64
 	sum           float64
 }
 
 type WinFst struct {
-	win, idx, cnt uint64
+	win, idx, cnt uint
 	vals          []float64
 }
 
 // Simple Linear Regression over timeline
 type WinSlr struct {
-	win, idx, cnt uint64
+	win, idx, cnt uint
 	vals, ws      []float64
 	varX, sumY    float64
 }
 
-func NewWinSum(win uint64) *WinSum {
+func NewWinSum(win uint) *WinSum {
 	return &WinSum{win: win, vals: make([]float64, win)}
 }
 
@@ -62,7 +62,7 @@ func (run *WinSum) App(val float64) (sum float64) {
 	return run.sum
 }
 
-func NewWinMax(win uint64) *WinMax {
+func NewWinMax(win uint) *WinMax {
 	return &WinMax{win: win, vals: make([]float64, win)}
 }
 
@@ -72,7 +72,7 @@ func (run *WinMax) App(val float64) (max float64) {
 		run.cnt++
 	}
 	max = run.vals[0]
-	for i := uint64(1); i < run.cnt; i++ {
+	for i := uint(1); i < run.cnt; i++ {
 		if run.vals[i] > max {
 			max = run.vals[i]
 		}
@@ -81,7 +81,7 @@ func (run *WinMax) App(val float64) (max float64) {
 	return
 }
 
-func NewWinMin(win uint64) *WinMin {
+func NewWinMin(win uint) *WinMin {
 	return &WinMin{win: win, vals: make([]float64, win)}
 }
 
@@ -91,7 +91,7 @@ func (run *WinMin) App(val float64) (min float64) {
 		run.cnt++
 	}
 	min = run.vals[0]
-	for i := uint64(1); i < run.cnt; i++ {
+	for i := uint(1); i < run.cnt; i++ {
 		if run.vals[i] < min {
 			min = run.vals[i]
 		}
@@ -100,7 +100,7 @@ func (run *WinMin) App(val float64) (min float64) {
 	return
 }
 
-func NewWinAvg(win uint64) *WinAvg {
+func NewWinAvg(win uint) *WinAvg {
 	return &WinAvg{win: win, vals: make([]float64, win)}
 }
 
@@ -114,7 +114,7 @@ func (run *WinAvg) App(val float64) (avg float64) {
 	return run.sum / float64(run.cnt)
 }
 
-func NewWinFst(win uint64) *WinFst {
+func NewWinFst(win uint) *WinFst {
 	return &WinFst{win: win, vals: make([]float64, win)}
 }
 
@@ -131,10 +131,10 @@ func (run *WinFst) App(val float64) (fst float64) {
 	}
 }
 
-func NewWinSlr(win uint64) *WinSlr {
+func NewWinSlr(win uint) *WinSlr {
 	run := &WinSlr{win: win, vals: make([]float64, win), ws: make([]float64, win)}
 	avg := float64(win-1) / float64(2)
-	for i := uint64(0); i < win; i++ {
+	for i := uint(0); i < win; i++ {
 		run.ws[i] = float64(i) - avg
 		run.varX += run.ws[i] * run.ws[i]
 	}
@@ -150,12 +150,12 @@ func (run *WinSlr) App(val float64) (slope float64) {
 		return
 	}
 	cov, yAvg := float64(0), run.sumY/float64(run.win)
-	for i := uint64(0); i < run.win; i++ {
+	for i := uint(0); i < run.win; i++ {
 		cov += run.ws[i] * (run.vals[next(run.win, run.idx+i)] - yAvg)
 	}
 	return cov / run.varX
 }
 
-func next(win, cnt uint64) uint64 {
+func next(win, cnt uint) uint {
 	return cnt % win
 }
