@@ -29,9 +29,10 @@ const (
 const RSIPeriod uint = 14
 
 type RSI_MOM uint                  // RSI momentum
-type rsi_mom func(float64) float64 // RSI momentum calculations
+type rsi_mom func(float64) float64 // RSI momentum calculators
 
 type RSI struct {
+	cnt, periodSmooth  uint
 	val                float64
 	mom                rsi_mom
 	avgU, avgD, smooth *run.EWMAvg
@@ -41,12 +42,13 @@ func NewRSI(mom RSI_MOM, period, periodSmooth uint) *RSI {
 	alpha := run.EWMCom(float64(period - 1))
 	var smooth *run.EWMAvg
 	if periodSmooth > 0 {
-		smooth = run.NewEWMAvg(run.EWMSpan(float64(periodSmooth)), false)
+		smooth = run.NewEWMAvg(run.EWMHalflife(float64(periodSmooth)), true)
 	}
 	rsi := &RSI{
-		avgU:   run.NewEWMAvg(alpha, false),
-		avgD:   run.NewEWMAvg(alpha, false),
-		smooth: smooth,
+		avgU:         run.NewEWMAvg(alpha, true),
+		avgD:         run.NewEWMAvg(alpha, true),
+		periodSmooth: periodSmooth,
+		smooth:       smooth,
 	}
 	moms := []rsi_mom{rsi.momLinear, rsi.momLinearRatio, rsi.momLogRatio}
 	rsi.mom = moms[mom]
@@ -58,24 +60,25 @@ func (rsi *RSI) Reset(val float64) {
 }
 
 func (rsi *RSI) App(val float64) float64 {
-	dv, du, dd := rsi.mom(val), 0., 0.
-	rsi.val = val
-	if dv > +1e-13 {
-		du = +dv
+	mom, u, d := rsi.mom(val), 0., 0.
+	if mom > +1e-13 {
+		u = +mom
 	}
-	if dv < -1e-13 {
-		dd = -dv
+	if mom < -1e-13 {
+		d = -mom
 	}
-	u, d := rsi.avgU.App(du), rsi.avgD.App(dd)
-	tot := u + d
-	if tot < 1e-13 {
-		return 50
+	u, d = rsi.avgU.App(u), rsi.avgD.App(d)
+	tot, idc := u+d, 50.
+	if rsi.cnt > rsi.periodSmooth && tot > 1e-13 {
+		idc = u / tot * 100
 	}
-	res := u / tot * 100
 	if rsi.smooth != nil {
-		res = rsi.smooth.App(res)
+		idc = rsi.smooth.App(idc)
 	}
-	return res
+
+	rsi.cnt++
+	rsi.val = val
+	return idc
 }
 
 func (rsi *RSI) momLinear(val float64) float64 {
