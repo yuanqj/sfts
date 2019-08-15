@@ -19,6 +19,7 @@ import (
 	"math"
 )
 
+// RSI momentum types
 const (
 	RSI_MOM_Linear RSI_MOM = iota
 	RSI_MOM_LinearRatio
@@ -27,20 +28,25 @@ const (
 
 const RSIPeriod uint = 14
 
-type RSI_MOM uint
-type rsi_mom func(float64) float64
+type RSI_MOM uint                  // RSI momentum
+type rsi_mom func(float64) float64 // RSI momentum calculations
 
 type RSI struct {
-	val        float64
-	mom        rsi_mom
-	avgU, avgD *run.EWMAvg
+	val                float64
+	mom                rsi_mom
+	avgU, avgD, smooth *run.EWMAvg
 }
 
-func NewRSI(period uint, mom RSI_MOM) *RSI {
+func NewRSI(mom RSI_MOM, period, periodSmooth uint) *RSI {
 	alpha := run.EWMCom(float64(period - 1))
+	var smooth *run.EWMAvg
+	if periodSmooth > 0 {
+		smooth = run.NewEWMAvg(run.EWMSpan(float64(periodSmooth)), false)
+	}
 	rsi := &RSI{
-		avgU: run.NewEWMAvg(alpha, false),
-		avgD: run.NewEWMAvg(alpha, false),
+		avgU:   run.NewEWMAvg(alpha, false),
+		avgD:   run.NewEWMAvg(alpha, false),
+		smooth: smooth,
 	}
 	moms := []rsi_mom{rsi.momLinear, rsi.momLinearRatio, rsi.momLogRatio}
 	rsi.mom = moms[mom]
@@ -65,7 +71,11 @@ func (rsi *RSI) App(val float64) float64 {
 	if tot < 1e-13 {
 		return 50
 	}
-	return u / tot * 100
+	res := u / tot * 100
+	if rsi.smooth != nil {
+		res = rsi.smooth.App(res)
+	}
+	return res
 }
 
 func (rsi *RSI) momLinear(val float64) float64 {
