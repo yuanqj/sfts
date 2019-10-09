@@ -19,9 +19,9 @@ import (
 )
 
 const (
-	MACDPeriodFast   uint = 0
-	MACDPeriodSlow   uint = 0
-	MACDPeriodSignal uint = 0
+	MACDPeriodFast   uint = 12
+	MACDPeriodSlow   uint = 26
+	MACDPeriodSignal uint = 9
 )
 
 type MACD struct {
@@ -29,15 +29,6 @@ type MACD struct {
 }
 
 func NewMACD(periodFast, periodSlow, periodSignal uint) *MACD {
-	if periodFast == MACDPeriodFast {
-		periodFast = 12
-	}
-	if periodSlow == MACDPeriodSlow {
-		periodSlow = 26
-	}
-	if periodSignal == MACDPeriodSignal {
-		periodSignal = 9
-	}
 	return &MACD{
 		emaFast:   run.NewEWMAvg(run.EWMSpan(float64(periodFast)), true),
 		emaSlow:   run.NewEWMAvg(run.EWMSpan(float64(periodSlow)), true),
