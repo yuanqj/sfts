@@ -16,79 +16,36 @@ package ta
 
 import (
 	"github.com/yuanqj/sfts/ts/run"
-	"math"
-)
-
-// RSI momentum types
-const (
-	RSI_MOM_Linear RSI_MOM = iota
-	RSI_MOM_LinearRatio
-	RSI_MOM_LogRatio
 )
 
 const RSIPeriod uint = 14
 
-type RSI_MOM uint                  // RSI momentum
-type rsi_mom func(float64) float64 // RSI momentum calculators
-
 type RSI struct {
-	cnt, periodSmooth  uint
-	val                float64
-	mom                rsi_mom
-	avgU, avgD, smooth *run.EWMAvg
+	ini, val   float64
+	avgU, avgD *run.EWMAvg
 }
 
-func NewRSI(mom RSI_MOM, period, periodSmooth uint) *RSI {
+func NewRSI(period uint) *RSI {
 	alpha := run.EWMCom(float64(period - 1))
-	var smooth *run.EWMAvg
-	if periodSmooth > 0 {
-		smooth = run.NewEWMAvg(run.EWMHalflife(float64(periodSmooth)), true)
+	return &RSI{
+		avgU: run.NewEWMAvg(alpha, false),
+		avgD: run.NewEWMAvg(alpha, false),
 	}
-	rsi := &RSI{
-		avgU:         run.NewEWMAvg(alpha, true),
-		avgD:         run.NewEWMAvg(alpha, true),
-		periodSmooth: periodSmooth,
-		smooth:       smooth,
-	}
-	moms := []rsi_mom{rsi.momLinear, rsi.momLinearRatio, rsi.momLogRatio}
-	rsi.mom = moms[mom]
-	return rsi
-}
-
-func (rsi *RSI) Reset(val float64) {
-	rsi.val = val
 }
 
 func (rsi *RSI) App(val float64) float64 {
-	mom, u, d := rsi.mom(val), 0., 0.
-	if mom > +1e-13 {
-		u = +mom
+	dv, du, dd := (val-rsi.val)*rsi.ini, 0., 0.
+	rsi.val, rsi.ini = val, 1
+	if dv > +1e-13 {
+		du = +dv
 	}
-	if mom < -1e-13 {
-		d = -mom
+	if dv < -1e-13 {
+		dd = -dv
 	}
-	u, d = rsi.avgU.App(u), rsi.avgD.App(d)
-	tot, idc := u+d, 50.
-	if rsi.cnt > rsi.periodSmooth && tot > 1e-13 {
-		idc = u / tot * 100
+	u, d := rsi.avgU.App(du), rsi.avgD.App(dd)
+	tot := u + d
+	if tot < 1e-13 {
+		return 50
 	}
-	if rsi.smooth != nil {
-		idc = rsi.smooth.App(idc)
-	}
-
-	rsi.cnt++
-	rsi.val = val
-	return idc
-}
-
-func (rsi *RSI) momLinear(val float64) float64 {
-	return val - rsi.val
-}
-
-func (rsi *RSI) momLinearRatio(val float64) float64 {
-	return (val - rsi.val) / rsi.val
-}
-
-func (rsi *RSI) momLogRatio(val float64) float64 {
-	return math.Log(val / rsi.val)
+	return u / tot * 100
 }

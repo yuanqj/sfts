@@ -24,8 +24,7 @@ var (
 )
 
 func TestRSI(t *testing.T) {
-	rsi := ta.NewRSI(ta.RSI_MOM_Linear, ta.RSIPeriod, 0)
-	rsi.Reset(vals[0])
+	rsi := ta.NewRSI(ta.RSIPeriod)
 	res := make([]float64, len(vals))
 	for i := range vals {
 		res[i] = rsi.App(vals[i])
